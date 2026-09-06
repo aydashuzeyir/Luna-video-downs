@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Luna Media & Google</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
@@ -13,13 +13,14 @@
             --text-color: #ffffff;
             --text-secondary: #a1a1aa;
             --border-color: rgba(255, 255, 255, 0.1);
+            --app-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--app-font);
         }
 
         body {
@@ -225,6 +226,27 @@
             align-items: center;
         }
         .folder-item:last-child { border-bottom: none; }
+
+        /* Ayarlar paneli üslubu */
+        .settings-group {
+            margin-bottom: 8px;
+        }
+        .settings-group label {
+            display: block;
+            color: var(--text-secondary);
+            font-size: 10px;
+            margin-bottom: 4px;
+        }
+        .settings-group select, .settings-group input {
+            width: 100%;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 6px 10px;
+            color: var(--text-color);
+            font-size: inherit;
+            outline: none;
+        }
     </style>
 </head>
 <body>
@@ -235,9 +257,28 @@
             <p>Media Player & Google Girişi</p>
         </div>
         <div class="header-icons">
+            <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
             <button class="icon-btn" onclick="location.reload()" title="Yenilə">🔄</button>
         </div>
     </header>
+
+    <!-- Ayarlar Paneli (Gizli/Açılan) -->
+    <div class="card" id="settingsCard" style="display:none;">
+        <div class="panel-title"><span>⚙️ Tətbiq Ayarları və Şriftlər</span></div>
+        <div class="settings-group">
+            <label>Şrift Üslubu (Font)</label>
+            <select id="fontSelect" onchange="changeFont()">
+                <option value="'Plus Jakarta Sans', sans-serif">Plus Jakarta Sans</option>
+                <option value="'Inter', sans-serif">Inter</option>
+                <option value="'Poppins', sans-serif">Poppins</option>
+                <option value="sans-serif">Standart (System)</option>
+            </select>
+        </div>
+        <div class="settings-group">
+            <label>Aksent Rəngi</label>
+            <input type="color" id="colorPicker" value="#ec4899" onchange="changeColor()" style="height: 32px; cursor: pointer;">
+        </div>
+    </div>
 
     <!-- Axtarış və Google Keçidi -->
     <div class="card">
@@ -287,6 +328,21 @@
     </div>
 
     <script>
+        function toggleSettings() {
+            const card = document.getElementById('settingsCard');
+            card.style.display = card.style.display === 'none' ? 'block' : 'none';
+        }
+
+        function changeFont() {
+            const fontVal = document.getElementById('fontSelect').value;
+            document.documentElement.style.setProperty('--app-font', fontVal);
+        }
+
+        function changeColor() {
+            const colorVal = document.getElementById('colorPicker').value;
+            document.documentElement.style.setProperty('--accent-color', colorVal);
+        }
+
         function loadMedia() {
             const val = document.getElementById('urlInput').value.trim();
             const player = document.getElementById('mainPlayer');
