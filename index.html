@@ -13,6 +13,7 @@
             --text-color: #ffffff;
             --text-secondary: #a1a1aa;
             --border-color: rgba(255, 255, 255, 0.1);
+            --base-font-size: 12px;
         }
 
         * {
@@ -32,24 +33,47 @@
             padding: 12px;
             max-width: 480px;
             margin: 0 auto;
+            font-size: var(--base-font-size);
         }
 
         header {
-            text-align: center;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
             margin-bottom: 12px;
-            position: relative;
         }
 
-        header h1 {
+        .header-title h1 {
             color: var(--accent-color);
             font-size: 22px;
             font-weight: 700;
         }
 
-        header p {
+        .header-title p {
             color: var(--text-secondary);
             font-size: 11px;
         }
+
+        .header-icons {
+            display: flex;
+            gap: 8px;
+        }
+
+        .icon-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.2s;
+        }
+        .icon-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
         .card {
             background: var(--card-bg);
@@ -59,6 +83,43 @@
             margin-bottom: 10px;
             backdrop-filter: blur(10px);
         }
+
+        /* Ayarlar paneli (gizli gəlir) */
+        .settings-card {
+            display: none;
+            animation: fadeIn 0.3s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-5px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .setting-group {
+            margin-bottom: 8px;
+        }
+        .setting-group:last-child { margin-bottom: 0; }
+
+        .setting-label {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 4px;
+            display: block;
+        }
+
+        .color-options {
+            display: flex;
+            gap: 6px;
+        }
+
+        .color-dot {
+            width: 22px;
+            height: 22px;
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+        }
+        .color-dot.active { border-color: #fff; }
 
         .search-box {
             display: flex;
@@ -73,7 +134,7 @@
             border-radius: 10px;
             padding: 8px 12px;
             color: var(--text-color);
-            font-size: 12px;
+            font-size: inherit;
             outline: none;
         }
 
@@ -88,7 +149,7 @@
             padding: 8px 14px;
             border-radius: 10px;
             font-weight: 600;
-            font-size: 12px;
+            font-size: inherit;
             cursor: pointer;
             text-decoration: none;
             display: inline-flex;
@@ -141,7 +202,6 @@
             margin-bottom: 6px;
         }
 
-        /* Sosial Şəbəkələr Bölməsi */
         .section-title {
             font-size: 11px;
             color: var(--text-secondary);
@@ -165,12 +225,12 @@
             align-items: center;
             gap: 6px;
             color: var(--text-color);
-            font-size: 11px;
+            font-size: inherit;
             font-weight: 500;
         }
 
         .folder-list {
-            font-size: 11px;
+            font-size: inherit;
             color: var(--text-secondary);
             max-height: 80px;
             overflow-y: auto;
@@ -188,9 +248,38 @@
 <body>
 
     <header>
-        <h1>Luna</h1>
-        <p>Media Player & Google Girişi</p>
+        <div class="header-title">
+            <h1>Luna</h1>
+            <p>Media Player & Google Girişi</p>
+        </div>
+        <div class="header-icons">
+            <button class="icon-btn" onclick="location.reload()" title="Yenilə">🔄</button>
+            <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
+        </div>
     </header>
+
+    <!-- Ayarlar Paneli (Font və Rəng seçimi) -->
+    <div class="card settings-card" id="settingsCard">
+        <div class="panel-title"><span>⚙️ Tənzimləmələr</span></div>
+        
+        <div class="setting-group">
+            <span class="setting-label">Font Ölçüsü:</span>
+            <div class="row-btns">
+                <button class="btn btn-secondary" onclick="changeFontSize('11px')">Kiçik</button>
+                <button class="btn btn-secondary" onclick="changeFontSize('13px')">Normal</button>
+            </div>
+        </div>
+
+        <div class="setting-group" style="margin-top: 8px;">
+            <span class="setting-label">Vurğu Rəngi:</span>
+            <div class="color-options">
+                <div class="color-dot active" style="background: #ec4899;" onclick="changeAccent('#ec4899', this)"></div>
+                <div class="color-dot" style="background: #3b82f6;" onclick="changeAccent('#3b82f6', this)"></div>
+                <div class="color-dot" style="background: #10b981;" onclick="changeAccent('#10b981', this)"></div>
+                <div class="color-dot" style="background: #f59e0b;" onclick="changeAccent('#f59e0b', this)"></div>
+            </div>
+        </div>
+    </div>
 
     <!-- Axtarış və Google Keçidi -->
     <div class="card">
@@ -204,7 +293,7 @@
         </div>
     </div>
 
-    <!-- Həmişə Açıq Sürüşdürmə Paneli ilə Video/Musiqi İzləmə -->
+    <!-- Sürüşdürmə Paneli ilə Video/Musiqi İzləmə -->
     <div class="card">
         <div class="panel-title">
             <span>🎵 Musiqi & Video İzləmə Paneli</span>
@@ -212,7 +301,6 @@
         </div>
         <div class="info-text" id="mediaInfo">Link daxil edərək videonu irəli-geri sürüşdürə bilərsiniz.</div>
         <div class="media-container">
-            <!-- controls atributu ilə irəli-geri sürüşdürmə paneli aktivdir -->
             <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
         </div>
     </div>
@@ -237,6 +325,21 @@
     </div>
 
     <script>
+        function toggleSettings() {
+            const card = document.getElementById('settingsCard');
+            card.style.display = card.style.display === 'block' ? 'none' : 'block';
+        }
+
+        function changeFontSize(size) {
+            document.documentElement.style.setProperty('--base-font-size', size);
+        }
+
+        function changeAccent(color, element) {
+            document.documentElement.style.setProperty('--accent-color', color);
+            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
+            element.classList.add('active');
+        }
+
         function loadMedia() {
             const val = document.getElementById('urlInput').value.trim();
             const player = document.getElementById('mainPlayer');
