@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Luna Media & Google</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
@@ -14,13 +15,14 @@
             --text-secondary: #a1a1aa;
             --border-color: rgba(255, 255, 255, 0.1);
             --base-font-size: 12px;
+            --current-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: 'Plus Jakarta Sans', sans-serif;
+            font-family: var(--current-font);
         }
 
         body {
@@ -84,7 +86,6 @@
             backdrop-filter: blur(10px);
         }
 
-        /* Ayarlar paneli (gizli gəlir) */
         .settings-card {
             display: none;
             animation: fadeIn 0.3s ease;
@@ -96,30 +97,40 @@
         }
 
         .setting-group {
-            margin-bottom: 8px;
+            margin-bottom: 10px;
         }
         .setting-group:last-child { margin-bottom: 0; }
 
         .setting-label {
             font-size: 11px;
             color: var(--text-secondary);
-            margin-bottom: 4px;
+            margin-bottom: 5px;
             display: block;
+            font-weight: 500;
         }
 
-        .color-options {
-            display: flex;
+        .color-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
             gap: 6px;
         }
 
         .color-dot {
-            width: 22px;
-            height: 22px;
+            width: 24px;
+            height: 24px;
             border-radius: 50%;
             cursor: pointer;
             border: 2px solid transparent;
+            transition: 0.2s;
         }
-        .color-dot.active { border-color: #fff; }
+        .color-dot:hover { transform: scale(1.1); }
+        .color-dot.active { border-color: #fff; transform: scale(1.1); }
+
+        .font-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
 
         .search-box {
             display: flex;
@@ -156,7 +167,9 @@
             align-items: center;
             justify-content: center;
             white-space: nowrap;
+            transition: 0.2s;
         }
+        .btn:hover { opacity: 0.9; }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.08);
@@ -164,6 +177,7 @@
             color: var(--text-color);
             width: 100%;
         }
+        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
 
         .row-btns {
             display: grid;
@@ -178,7 +192,29 @@
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
+
+        .player-actions {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .reload-media-btn {
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid var(--border-color);
+            color: var(--accent-color);
+            cursor: pointer;
+            font-size: 11px;
+            padding: 4px 8px;
+            border-radius: 6px;
+            transition: 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .reload-media-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
         .media-container {
             width: 100%;
@@ -227,7 +263,9 @@
             color: var(--text-color);
             font-size: inherit;
             font-weight: 500;
+            transition: 0.2s;
         }
+        .social-card:hover { border-color: var(--accent-color); }
 
         .folder-list {
             font-size: inherit;
@@ -237,10 +275,11 @@
         }
 
         .folder-item {
-            padding: 4px 0;
+            padding: 6px 0;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
         .folder-item:last-child { border-bottom: none; }
     </style>
@@ -253,30 +292,43 @@
             <p>Media Player & Google Girişi</p>
         </div>
         <div class="header-icons">
-            <button class="icon-btn" onclick="location.reload()" title="Yenilə">🔄</button>
+            <!-- Proqramı tam yeniləmə düyməsi -->
+            <button class="icon-btn" onclick="fullAppReset()" title="Proqramı Yenilə">🔄</button>
             <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
         </div>
     </header>
 
-    <!-- Ayarlar Paneli (Font və Rəng seçimi) -->
+    <!-- Ayarlar Paneli -->
     <div class="card settings-card" id="settingsCard">
         <div class="panel-title"><span>⚙️ Tənzimləmələr</span></div>
         
         <div class="setting-group">
-            <span class="setting-label">Font Ölçüsü:</span>
-            <div class="row-btns">
-                <button class="btn btn-secondary" onclick="changeFontSize('11px')">Kiçik</button>
-                <button class="btn btn-secondary" onclick="changeFontSize('13px')">Normal</button>
+            <span class="setting-label">Font Stili:</span>
+            <div class="font-grid">
+                <button class="btn btn-secondary" onclick="changeFont('Plus Jakarta Sans', '12px')">Jakarta (Normal)</button>
+                <button class="btn btn-secondary" onclick="changeFont('Plus Jakarta Sans', '14px')">Jakarta (Böyük)</button>
+                <button class="btn btn-secondary" onclick="changeFont('Inter', '12px')">Inter</button>
+                <button class="btn btn-secondary" onclick="changeFont('Poppins', '12px')">Poppins</button>
+                <button class="btn btn-secondary" onclick="changeFont('Roboto', '12px')">Roboto</button>
+                <button class="btn btn-secondary" onclick="changeFont('sans-serif', '11px')">Sadə (Kiçik)</button>
             </div>
         </div>
 
-        <div class="setting-group" style="margin-top: 8px;">
+        <div class="setting-group" style="margin-top: 10px;">
             <span class="setting-label">Vurğu Rəngi:</span>
-            <div class="color-options">
-                <div class="color-dot active" style="background: #ec4899;" onclick="changeAccent('#ec4899', this)"></div>
-                <div class="color-dot" style="background: #3b82f6;" onclick="changeAccent('#3b82f6', this)"></div>
-                <div class="color-dot" style="background: #10b981;" onclick="changeAccent('#10b981', this)"></div>
-                <div class="color-dot" style="background: #f59e0b;" onclick="changeAccent('#f59e0b', this)"></div>
+            <div class="color-grid">
+                <div class="color-dot active" style="background: #ec4899;" onclick="changeAccent('#ec4899', this)" title="Çəhrayı"></div>
+                <div class="color-dot" style="background: #3b82f6;" onclick="changeAccent('#3b82f6', this)" title="Mavi"></div>
+                <div class="color-dot" style="background: #10b981;" onclick="changeAccent('#10b981', this)" title="Yaşıl"></div>
+                <div class="color-dot" style="background: #f59e0b;" onclick="changeAccent('#f59e0b', this)" title="Narıncı"></div>
+                <div class="color-dot" style="background: #8b5cf6;" onclick="changeAccent('#8b5cf6', this)" title="Bənövşəyi"></div>
+                <div class="color-dot" style="background: #ef4444;" onclick="changeAccent('#ef4444', this)" title="Qırmızı"></div>
+                <div class="color-dot" style="background: #06b6d4;" onclick="changeAccent('#06b6d4', this)" title="Mavi-Yaşıl"></div>
+                <div class="color-dot" style="background: #eab308;" onclick="changeAccent('#eab308', this)" title="Sarı"></div>
+                <div class="color-dot" style="background: #f43f5e;" onclick="changeAccent('#f43f5e', this)" title="Tünd Çəhrayı"></div>
+                <div class="color-dot" style="background: #14b8a6;" onclick="changeAccent('#14b8a6', this)" title="Firuzəyi"></div>
+                <div class="color-dot" style="background: #a855f7;" onclick="changeAccent('#a855f7', this)" title="Açıq Bənövşəyi"></div>
+                <div class="color-dot" style="background: #ffffff;" onclick="changeAccent('#ffffff', this)" title="Ağ"></div>
             </div>
         </div>
     </div>
@@ -293,19 +345,23 @@
         </div>
     </div>
 
-    <!-- Sürüşdürmə Paneli ilə Video/Musiqi İzləmə -->
+    <!-- Sürüşdürmə Paneli və Musiqi Yeniləmə İşarəsi ilə Pleyer -->
     <div class="card">
         <div class="panel-title">
             <span>🎵 Musiqi & Video İzləmə Paneli</span>
-            <span id="playerStatus" style="color: var(--text-secondary); font-size: 10px;">Hazır</span>
+            <div class="player-actions">
+                <button class="reload-media-btn" onclick="reloadMedia()" title="Musiqini Yenidən Başlat">🔄 Yenilə</button>
+                <span id="playerStatus" style="color: var(--text-secondary); font-size: 10px;">Hazır</span>
+            </div>
         </div>
         <div class="info-text" id="mediaInfo">Link daxil edərək videonu irəli-geri sürüşdürə bilərsiniz.</div>
         <div class="media-container">
+            <!-- Sürüşdürmə çubuğu (controls) vəoplay/pause daxildir -->
             <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
         </div>
     </div>
 
-    <!-- Dəstəklənən Sosial Şəbəkələr və Spotify -->
+    <!-- Sosial Şəbəkələr və Spotify -->
     <div class="section-title">Dəstəklənən Platformalar</div>
     <div class="social-grid">
         <div class="social-card"><span>🎧</span> Spotify</div>
@@ -318,7 +374,7 @@
 
     <!-- Qovluqlar Bölməsi -->
     <div class="card" id="folderCard" style="display:none;">
-        <div class="panel-title"><span>Qovluqlarım</span></div>
+        <div class="panel-title"><span>📂 Qovluqlarım</span></div>
         <div class="folder-list" id="folderContainer">
             <div class="folder-item"><span>📁 Əsas Qovluq</span><span>0 fayl</span></div>
         </div>
@@ -330,7 +386,8 @@
             card.style.display = card.style.display === 'block' ? 'none' : 'block';
         }
 
-        function changeFontSize(size) {
+        function changeFont(fontFamily, size) {
+            document.documentElement.style.setProperty('--current-font', fontFamily);
             document.documentElement.style.setProperty('--base-font-size', size);
         }
 
@@ -338,6 +395,12 @@
             document.documentElement.style.setProperty('--accent-color', color);
             document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
             element.classList.add('active');
+        }
+
+        function fullAppReset() {
+            if (confirm("Proqramı tamamilə yeniləmək istəyirsiniz?")) {
+                location.reload();
+            }
         }
 
         function loadMedia() {
@@ -355,10 +418,25 @@
                 info.innerHTML = `Oxunan: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 28)}...</a>`;
                 status.innerText = "Oxunur";
                 player.src = val;
+                player.load();
                 player.play().catch(e => console.log(e));
             } else {
                 info.innerText = `Axtarıldı: ${val}`;
                 status.innerText = "Hazır";
+            }
+        }
+
+        function reloadMedia() {
+            const player = document.getElementById('mainPlayer');
+            if (player.src && player.src !== window.location.href) {
+                player.currentTime = 0;
+                player.load();
+                player.play().catch(e => console.log(e));
+                const status = document.getElementById('playerStatus');
+                status.innerText = "Yeniləndi";
+                setTimeout(() => status.innerText = "Oxunur", 1500);
+            } else {
+                alert('Hazırda oxunan musiqi/video yoxdur!');
             }
         }
 
@@ -371,10 +449,11 @@
                 
                 const item = document.createElement('div');
                 item.className = 'folder-item';
-                item.innerHTML = `<span>📁 ${name}</span><span>0 fayl</span>`;
+                item.innerHTML = `<span>📁 ${name}</span><span style="color:var(--accent-color);">0 fayl</span>`;
                 container.appendChild(item);
             }
         }
     </script>
 </body>
 </html>
+
