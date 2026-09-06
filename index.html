@@ -56,7 +56,7 @@
 
         .header-icons {
             display: flex;
-            gap: 8px;
+            gap: 6px;
         }
 
         .icon-btn {
@@ -256,11 +256,13 @@
             <p>Media Player & Google Girişi</p>
         </div>
         <div class="header-icons">
+            <button class="icon-btn" onclick="toggleFullscreen()" title="Tam Ekran">⛶</button>
             <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
             <button class="icon-btn" onclick="location.reload()" title="Yenilə">🔄</button>
         </div>
     </header>
 
+    <!-- Ayarlar Paneli (Şriftlər) -->
     <div class="card" id="settingsCard" style="display:none;">
         <div class="panel-title"><span>⚙️ Tətbiq Ayarları və Şriftlər</span></div>
         <div class="settings-group">
@@ -274,6 +276,7 @@
         </div>
     </div>
 
+    <!-- Axtarış və Google Keçidi -->
     <div class="card">
         <div class="search-box">
             <input type="text" id="urlInput" placeholder="Spotify / Media linki yapışdırın...">
@@ -285,6 +288,7 @@
         </div>
     </div>
 
+    <!-- Pleyer və Yüklənmə Ekranı -->
     <div class="card">
         <div class="panel-title">
             <span>🎵 Musiqi & Video Pleyeri</span>
@@ -296,10 +300,12 @@
         </div>
         <div class="info-text" id="mediaInfo">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</div>
         <div class="media-container">
-            <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
+            <!-- controls atributu silindi, beləliklə daxili pleyer paneli görünməyəcək -->
+            <video id="mainPlayer" playsinline src=""></video>
         </div>
     </div>
 
+    <!-- Sosial Şəbəkələr və Spotify -->
     <div class="section-title">Dəstəklənən Platformalar</div>
     <div class="social-grid">
         <div class="social-card"><span>🎧</span> Spotify</div>
@@ -310,6 +316,7 @@
         <div class="social-card"><span>🗲</span> Twitter (X)</div>
     </div>
 
+    <!-- Qovluqlar Bölməsi -->
     <div class="card" id="folderCard" style="display:none;">
         <div class="panel-title"><span>📂 Qovluqlarım</span></div>
         <div class="folder-list" id="folderContainer">
@@ -318,6 +325,18 @@
     </div>
 
     <script>
+        function toggleFullscreen() {
+            if (!document.fullscreenElement) {
+                document.documentElement.requestFullscreen().catch(err => {
+                    alert(`Tam ekrana keçmək mümkün olmadı: ${err.message}`);
+                });
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                }
+            }
+        }
+
         function toggleSettings() {
             const card = document.getElementById('settingsCard');
             card.style.display = card.style.display === 'none' ? 'block' : 'none';
