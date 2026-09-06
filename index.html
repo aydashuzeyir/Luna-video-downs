@@ -168,6 +168,7 @@
             border-radius: 10px;
             overflow: hidden;
             margin-top: 6px;
+            display: none; /* Başlanğıcda gizlidir, link daxil edildikdə görünəcək */
         }
 
         .media-container video {
@@ -299,8 +300,8 @@
             </div>
         </div>
         <div class="info-text" id="mediaInfo">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</div>
-        <div class="media-container">
-            <!-- controls atributu silindi, beləliklə daxili pleyer paneli görünməyəcək -->
+        <!-- Boş video qutusu artıq gizlədildi, yalnız link daxil edildikdə görünəcək -->
+        <div class="media-container" id="mediaContainerBox">
             <video id="mainPlayer" playsinline src=""></video>
         </div>
     </div>
@@ -352,6 +353,7 @@
             const player = document.getElementById('mainPlayer');
             const info = document.getElementById('mediaInfo');
             const status = document.getElementById('playerStatus');
+            const mediaBox = document.getElementById('mediaContainerBox');
 
             if (!val) {
                 alert('Zəhmət olmasa keçərli link daxil edin!');
@@ -359,6 +361,7 @@
             }
 
             if (val.startsWith('http')) {
+                mediaBox.style.display = 'block'; // Link daxil edildikdə video qutusu açılır
                 info.innerHTML = `Ekranda göstərilir: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 25)}...</a>`;
                 status.innerText = "Oxunur";
                 player.src = val;
@@ -393,7 +396,7 @@
                 a.click();
                 document.body.removeChild(a);
 
-                info.innerHTML = `<span style="color:#10b981;">✔ Fayl uğurla yükləndi və ekranda göstərildi!</span>`;
+                info.innerHTML = `<span style="color:#10b981;">✔ Fayl uğurla yükləndi!</span>`;
                 
                 const card = document.getElementById('folderCard');
                 card.style.display = 'block';
