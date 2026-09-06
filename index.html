@@ -7,12 +7,14 @@
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
-            --card-bg: rgba(24, 34, 27, 0.9);
+            --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            --card-bg: rgba(30, 41, 59, 0.85);
             --accent-color: #ec4899;
+            --folder-color: #10b981;
+            --google-color: #3b82f6;
             --text-color: #ffffff;
-            --text-secondary: #a1a1aa;
-            --border-color: rgba(255, 255, 255, 0.1);
+            --text-secondary: #94a3b8;
+            --border-color: rgba(255, 255, 255, 0.12);
         }
 
         * {
@@ -42,7 +44,7 @@
 
         header h1 {
             color: var(--accent-color);
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 700;
         }
 
@@ -57,7 +59,8 @@
             border-radius: 14px;
             padding: 12px;
             margin-bottom: 10px;
-            backdrop-filter: blur(10px);
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
         }
 
         .search-box {
@@ -68,10 +71,10 @@
 
         .search-box input {
             flex: 1;
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0.35);
             border: 1px solid var(--border-color);
             border-radius: 10px;
-            padding: 8px 12px;
+            padding: 9px 12px;
             color: var(--text-color);
             font-size: 12px;
             outline: none;
@@ -85,7 +88,7 @@
             background: var(--accent-color);
             border: none;
             color: #fff;
-            padding: 8px 14px;
+            padding: 9px 14px;
             border-radius: 10px;
             font-weight: 600;
             font-size: 12px;
@@ -95,19 +98,23 @@
             align-items: center;
             justify-content: center;
             white-space: nowrap;
+            transition: 0.2s;
         }
+        .btn:hover { opacity: 0.9; }
 
-        .btn-secondary {
-            background: rgba(255, 255, 255, 0.08);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            width: 100%;
-        }
-
+        /* Rəngli Düymələr */
         .row-btns {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 6px;
+        }
+
+        .btn-google {
+            background: var(--google-color);
+        }
+
+        .btn-folder {
+            background: var(--folder-color);
         }
 
         .panel-title {
@@ -117,8 +124,10 @@
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
+            align-items: center;
         }
 
+        /* Pleyer və İrəli-Geri Sürüşdürmə */
         .media-container {
             width: 100%;
             background: #000;
@@ -142,6 +151,34 @@
             margin-bottom: 6px;
         }
 
+        /* Sosial Şəbəkələr və İkonlar */
+        .section-title {
+            font-size: 11px;
+            color: var(--text-secondary);
+            margin-bottom: 6px;
+            font-weight: 500;
+        }
+
+        .social-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 6px;
+            margin-bottom: 10px;
+        }
+
+        .social-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--text-color);
+            font-size: 11px;
+            font-weight: 500;
+        }
+
         .folder-list {
             font-size: 11px;
             color: var(--text-secondary);
@@ -150,7 +187,7 @@
         }
 
         .folder-item {
-            padding: 4px 0;
+            padding: 5px 0;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
@@ -165,29 +202,40 @@
         <p>Media Player & Google Girişi</p>
     </header>
 
-    <!-- Axtarış və Google Keçidi -->
+    <!-- Axtarış və Rəngli Düymələr -->
     <div class="card">
         <div class="search-box">
             <input type="text" id="urlInput" placeholder="Video/Musiqi linki yapışdırın...">
             <button class="btn" onclick="loadMedia()">Aç</button>
         </div>
         <div class="row-btns">
-            <a href="https://www.google.com" target="_blank" class="btn btn-secondary">🌐 Google-a Get</a>
-            <button class="btn btn-secondary" onclick="addNewFolder()">📁 Qovluq yarat</button>
+            <a href="https://www.google.com" target="_blank" class="btn btn-google">🌐 Google-a Get</a>
+            <button class="btn btn-folder" onclick="addNewFolder()">📁 New Folder</button>
         </div>
     </div>
 
-    <!-- Həmişə Açıq Sürüşdürmə Paneli ilə Video/Musiqi İzləmə -->
+    <!-- Sürüşdürmə Paneli (Progress Bar) olan Video Pleyer -->
     <div class="card">
         <div class="panel-title">
-            <span>🎵 Sürüşdürmə Panelikli Pleyer</span>
+            <span>🎵 Musiqi & Video Sürüşdürmə Paneli</span>
             <span id="playerStatus" style="color: var(--text-secondary); font-size: 10px;">Hazır</span>
         </div>
-        <div class="info-text" id="mediaInfo">Link daxil edərək videonu irəli-geri sürüşdürə bilərsiniz.</div>
+        <div class="info-text" id="mediaInfo">Videonu xətt üzərindən irəli və ya geri sürüşdürə bilərsiniz.</div>
         <div class="media-container">
-            <!-- controls atributu sayəsində irəli-geri sürüşdürmə çubuğu (progress bar) aktiv olur -->
+            <!-- controls atributu irəli-geri sürüşdürmə və səs çubuğunu aktiv saxlayır -->
             <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
         </div>
+    </div>
+
+    <!-- Dəstəklənən Sosial Şəbəkələr -->
+    <div class="section-title">Dəstəklənən Platformalar</div>
+    <div class="social-grid">
+        <div class="social-card"><span>📌</span> Pinterest</div>
+        <div class="social-card"><span>👥</span> Facebook</div>
+        <div class="social-card"><span>📸</span> Instagram</div>
+        <div class="social-card"><span>🧵</span> Threads</div>
+        <div class="social-card"><span>🗲</span> Twitter (X)</div>
+        <div class="social-card"><span>🎵</span> Musiqi</div>
     </div>
 
     <!-- Qovluqlar Bölməsi -->
