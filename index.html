@@ -279,7 +279,7 @@
             font-size: 13px;
         }
 
-        .ic-spotify { background: rgba(29, 185, 84, 0.15); color: #1db954; }
+        .ic-music { background: rgba(29, 185, 84, 0.15); color: #1db954; }
         .ic-media { background: rgba(236, 72, 153, 0.15); color: var(--accent-color); }
 
         .info-card {
@@ -303,6 +303,7 @@
         <button class="settings-toggle-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
     </header>
 
+    <!-- Ayarlar Paneli -->
     <div class="settings-wrapper" id="settingsWrapper">
         <div class="settings-card">
             <span class="settings-label">Fon Teması:</span>
@@ -313,7 +314,7 @@
                 <button class="opt-btn" onclick="setTheme('ocean', this)">Ocean</button>
                 <button class="opt-btn" onclick="setTheme('purple', this)">Purple</button>
                 <button class="opt-btn" onclick="setTheme('crimson', this)">Crimson</button>
-                <button class="opt-btn" onclick="setTheme('midnight', this)">Midnight</button>
+                <button class="opt-btn" onclick="setOptionTheme('midnight', this)">Midnight</button>
                 <button class="opt-btn" onclick="setTheme('gold', this)">Gold</button>
             </div>
         </div>
@@ -332,11 +333,13 @@
         </div>
     </div>
 
+    <!-- Axtarış və Endirmə Paneli -->
     <div class="search-container">
-        <input type="text" id="urlInput" placeholder="Video və ya musiqi linkini bura yapışdır...">
+        <input type="text" id="urlInput" placeholder="Musiqi və ya video linkini bura yapışdır...">
         <button onclick="handleDownload()">Endir</button>
     </div>
 
+    <!-- Nəticə, İzləmə və Dinləmə Paneli -->
     <div class="download-result-card" id="resultCard">
         <div class="result-title">Media Nəticələri:</div>
         <div id="resultList"></div>
@@ -346,7 +349,7 @@
     <div class="section-title">Rejimlər</div>
     <div class="social-grid">
         <div class="social-card">
-            <span class="ic-spotify">🎧</span> Musiqi Dinləmə
+            <span class="ic-music">🎧</span> Musiqi Dinləmə
         </div>
         <div class="social-card">
             <span class="ic-media">▶</span> Video İzləmə
@@ -354,7 +357,7 @@
     </div>
 
     <div class="info-card">
-        Link daxil etdikdən sonra faylı birbaşa endirə, arxa planda dinləyə və ya izləyə bilərsiniz.
+        Link daxil etdikdən sonra heç bir kənar tətbiqə keçmədən birbaşa səhifədə dinləyə və ya endirə bilərsiniz.
     </div>
 
     <script>
@@ -384,35 +387,46 @@
             const mediaContainer = document.getElementById('mediaContainer');
 
             if(!val) {
-                alert('Zəhmət olmasa link daxil edin!');
+                alert('Zəhmət olmasa keçərli link daxil edin!');
                 return;
             }
 
             resultCard.classList.add('active');
             
             if(val.startsWith('http')) {
+                // Link birbaşa daxildə işlənməsi üçün hazırlandı (kənar tətbiqlərə keçidin qarşısı alındı)
                 resultList.innerHTML = `
-                    <a href="${val}" download target="_blank" class="download-opt-btn">
+                    <div class="download-opt-btn" onclick="triggerFileDownload('${val}')" style="cursor:pointer;">
                         <span>📥 Cihaza Yüklə (Download)</span>
                         <span>➔</span>
-                    </a>
-                    <a href="${val}" target="_blank" class="download-opt-btn" style="background: rgba(99, 102, 241, 0.15);">
-                        <span>🎧 Arxa Planda Dinlə / İzlə</span>
-                        <span>➔</span>
-                    </a>
+                    </div>
+                    <div class="download-opt-btn" style="background: rgba(99, 102, 241, 0.15);">
+                        <span>🎧 Səhifədə Hazırdır</span>
+                        <span>✔</span>
+                    </div>
                 `;
 
                 mediaContainer.classList.add('active');
-                if(val.includes('.mp3') || val.includes('audio')) {
+                if(val.includes('.mp3') || val.includes('audio') || val.includes('spotify') || val.includes('track')) {
                     mediaContainer.innerHTML = `<audio controls controlsList="nodownload" src="${val}"></audio>`;
                 } else {
                     mediaContainer.innerHTML = `<video controls playsinline src="${val}"></video>`;
                 }
             } else {
-                resultList.innerHTML = `<div style="font-size:12px; color:var(--text-secondary);">Axtarış: ${val}</div>`;
+                resultList.innerHTML = `<div style="font-size:12px; color:var(--text-secondary);">Axtarış sorğusu: ${val}</div>`;
                 mediaContainer.classList.remove('active');
                 mediaContainer.innerHTML = '';
             }
+        }
+
+        function triggerFileDownload(url) {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = '';
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
         }
     </script>
 </body>
