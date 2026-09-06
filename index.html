@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Luna Media & Google</title>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
@@ -14,15 +13,13 @@
             --text-color: #ffffff;
             --text-secondary: #a1a1aa;
             --border-color: rgba(255, 255, 255, 0.1);
-            --base-font-size: 12px;
-            --current-font: 'Plus Jakarta Sans', sans-serif;
         }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--current-font);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
@@ -35,7 +32,7 @@
             padding: 12px;
             max-width: 480px;
             margin: 0 auto;
-            font-size: var(--base-font-size);
+            font-size: 12px;
         }
 
         header {
@@ -86,52 +83,6 @@
             backdrop-filter: blur(10px);
         }
 
-        .settings-card {
-            display: none;
-            animation: fadeIn 0.3s ease;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(-5px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        .setting-group {
-            margin-bottom: 10px;
-        }
-        .setting-group:last-child { margin-bottom: 0; }
-
-        .setting-label {
-            font-size: 11px;
-            color: var(--text-secondary);
-            margin-bottom: 5px;
-            display: block;
-            font-weight: 500;
-        }
-
-        .color-grid {
-            display: grid;
-            grid-template-columns: repeat(6, 1fr);
-            gap: 6px;
-        }
-
-        .color-dot {
-            width: 24px;
-            height: 24px;
-            border-radius: 50%;
-            cursor: pointer;
-            border: 2px solid transparent;
-            transition: 0.2s;
-        }
-        .color-dot:hover { transform: scale(1.1); }
-        .color-dot.active { border-color: #fff; transform: scale(1.1); }
-
-        .font-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 6px;
-        }
-
         .search-box {
             display: flex;
             gap: 6px;
@@ -167,9 +118,7 @@
             align-items: center;
             justify-content: center;
             white-space: nowrap;
-            transition: 0.2s;
         }
-        .btn:hover { opacity: 0.9; }
 
         .btn-secondary {
             background: rgba(255, 255, 255, 0.08);
@@ -177,7 +126,6 @@
             color: var(--text-color);
             width: 100%;
         }
-        .btn-secondary:hover { background: rgba(255, 255, 255, 0.15); }
 
         .row-btns {
             display: grid;
@@ -198,23 +146,20 @@
         .player-actions {
             display: flex;
             align-items: center;
-            gap: 6px;
+            gap: 5px;
         }
 
-        .reload-media-btn {
+        .player-action-btn {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-color);
             color: var(--accent-color);
             cursor: pointer;
-            font-size: 11px;
-            padding: 4px 8px;
+            font-size: 10px;
+            padding: 4px 7px;
             border-radius: 6px;
             transition: 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 4px;
         }
-        .reload-media-btn:hover { background: rgba(255, 255, 255, 0.15); }
+        .player-action-btn:hover { background: rgba(255, 255, 255, 0.15); }
 
         .media-container {
             width: 100%;
@@ -263,9 +208,7 @@
             color: var(--text-color);
             font-size: inherit;
             font-weight: 500;
-            transition: 0.2s;
         }
-        .social-card:hover { border-color: var(--accent-color); }
 
         .folder-list {
             font-size: inherit;
@@ -292,51 +235,14 @@
             <p>Media Player & Google Girişi</p>
         </div>
         <div class="header-icons">
-            <!-- Proqramı tam yeniləmə düyməsi -->
-            <button class="icon-btn" onclick="fullAppReset()" title="Proqramı Yenilə">🔄</button>
-            <button class="icon-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
+            <button class="icon-btn" onclick="location.reload()" title="Yenilə">🔄</button>
         </div>
     </header>
-
-    <!-- Ayarlar Paneli -->
-    <div class="card settings-card" id="settingsCard">
-        <div class="panel-title"><span>⚙️ Tənzimləmələr</span></div>
-        
-        <div class="setting-group">
-            <span class="setting-label">Font Stili:</span>
-            <div class="font-grid">
-                <button class="btn btn-secondary" onclick="changeFont('Plus Jakarta Sans', '12px')">Jakarta (Normal)</button>
-                <button class="btn btn-secondary" onclick="changeFont('Plus Jakarta Sans', '14px')">Jakarta (Böyük)</button>
-                <button class="btn btn-secondary" onclick="changeFont('Inter', '12px')">Inter</button>
-                <button class="btn btn-secondary" onclick="changeFont('Poppins', '12px')">Poppins</button>
-                <button class="btn btn-secondary" onclick="changeFont('Roboto', '12px')">Roboto</button>
-                <button class="btn btn-secondary" onclick="changeFont('sans-serif', '11px')">Sadə (Kiçik)</button>
-            </div>
-        </div>
-
-        <div class="setting-group" style="margin-top: 10px;">
-            <span class="setting-label">Vurğu Rəngi:</span>
-            <div class="color-grid">
-                <div class="color-dot active" style="background: #ec4899;" onclick="changeAccent('#ec4899', this)" title="Çəhrayı"></div>
-                <div class="color-dot" style="background: #3b82f6;" onclick="changeAccent('#3b82f6', this)" title="Mavi"></div>
-                <div class="color-dot" style="background: #10b981;" onclick="changeAccent('#10b981', this)" title="Yaşıl"></div>
-                <div class="color-dot" style="background: #f59e0b;" onclick="changeAccent('#f59e0b', this)" title="Narıncı"></div>
-                <div class="color-dot" style="background: #8b5cf6;" onclick="changeAccent('#8b5cf6', this)" title="Bənövşəyi"></div>
-                <div class="color-dot" style="background: #ef4444;" onclick="changeAccent('#ef4444', this)" title="Qırmızı"></div>
-                <div class="color-dot" style="background: #06b6d4;" onclick="changeAccent('#06b6d4', this)" title="Mavi-Yaşıl"></div>
-                <div class="color-dot" style="background: #eab308;" onclick="changeAccent('#eab308', this)" title="Sarı"></div>
-                <div class="color-dot" style="background: #f43f5e;" onclick="changeAccent('#f43f5e', this)" title="Tünd Çəhrayı"></div>
-                <div class="color-dot" style="background: #14b8a6;" onclick="changeAccent('#14b8a6', this)" title="Firuzəyi"></div>
-                <div class="color-dot" style="background: #a855f7;" onclick="changeAccent('#a855f7', this)" title="Açıq Bənövşəyi"></div>
-                <div class="color-dot" style="background: #ffffff;" onclick="changeAccent('#ffffff', this)" title="Ağ"></div>
-            </div>
-        </div>
-    </div>
 
     <!-- Axtarış və Google Keçidi -->
     <div class="card">
         <div class="search-box">
-            <input type="text" id="urlInput" placeholder="Video/Musiqi linki yapışdırın...">
+            <input type="text" id="urlInput" placeholder="Spotify / Media linki yapışdırın...">
             <button class="btn" onclick="loadMedia()">Aç</button>
         </div>
         <div class="row-btns">
@@ -345,18 +251,18 @@
         </div>
     </div>
 
-    <!-- Sürüşdürmə Paneli və Musiqi Yeniləmə İşarəsi ilə Pleyer -->
+    <!-- Pleyer və Yüklənmə Ekranı -->
     <div class="card">
         <div class="panel-title">
-            <span>🎵 Musiqi & Video İzləmə Paneli</span>
+            <span>🎵 Musiqi & Video Pleyeri</span>
             <div class="player-actions">
-                <button class="reload-media-btn" onclick="reloadMedia()" title="Musiqini Yenidən Başlat">🔄 Yenilə</button>
+                <button class="player-action-btn" onclick="reloadMedia()" title="Yenidən Başlat">🔄 Yenilə</button>
+                <button class="player-action-btn" onclick="downloadMedia()" title="Yüklə">📥 Yüklə</button>
                 <span id="playerStatus" style="color: var(--text-secondary); font-size: 10px;">Hazır</span>
             </div>
         </div>
-        <div class="info-text" id="mediaInfo">Link daxil edərək videonu irəli-geri sürüşdürə bilərsiniz.</div>
+        <div class="info-text" id="mediaInfo">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</div>
         <div class="media-container">
-            <!-- Sürüşdürmə çubuğu (controls) vəoplay/pause daxildir -->
             <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
         </div>
     </div>
@@ -376,33 +282,11 @@
     <div class="card" id="folderCard" style="display:none;">
         <div class="panel-title"><span>📂 Qovluqlarım</span></div>
         <div class="folder-list" id="folderContainer">
-            <div class="folder-item"><span>📁 Əsas Qovluq</span><span>0 fayl</span></div>
+            <div class="folder-item"><span>📁 Əsas Qovluq</span><span id="folderCount">0 fayl</span></div>
         </div>
     </div>
 
     <script>
-        function toggleSettings() {
-            const card = document.getElementById('settingsCard');
-            card.style.display = card.style.display === 'block' ? 'none' : 'block';
-        }
-
-        function changeFont(fontFamily, size) {
-            document.documentElement.style.setProperty('--current-font', fontFamily);
-            document.documentElement.style.setProperty('--base-font-size', size);
-        }
-
-        function changeAccent(color, element) {
-            document.documentElement.style.setProperty('--accent-color', color);
-            document.querySelectorAll('.color-dot').forEach(d => d.classList.remove('active'));
-            element.classList.add('active');
-        }
-
-        function fullAppReset() {
-            if (confirm("Proqramı tamamilə yeniləmək istəyirsiniz?")) {
-                location.reload();
-            }
-        }
-
         function loadMedia() {
             const val = document.getElementById('urlInput').value.trim();
             const player = document.getElementById('mainPlayer');
@@ -415,7 +299,7 @@
             }
 
             if (val.startsWith('http')) {
-                info.innerHTML = `Oxunan: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 28)}...</a>`;
+                info.innerHTML = `Ekranda göstərilir: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 25)}...</a>`;
                 status.innerText = "Oxunur";
                 player.src = val;
                 player.load();
@@ -428,15 +312,34 @@
 
         function reloadMedia() {
             const player = document.getElementById('mainPlayer');
-            if (player.src && player.src !== window.location.href) {
+            if (player.src) {
                 player.currentTime = 0;
                 player.load();
                 player.play().catch(e => console.log(e));
                 const status = document.getElementById('playerStatus');
                 status.innerText = "Yeniləndi";
                 setTimeout(() => status.innerText = "Oxunur", 1500);
+            }
+        }
+
+        function downloadMedia() {
+            const player = document.getElementById('mainPlayer');
+            const info = document.getElementById('mediaInfo');
+            if (player.src && player.src !== window.location.href) {
+                const a = document.createElement('a');
+                a.href = player.src;
+                a.download = 'media_fayli';
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+
+                info.innerHTML = `<span style="color:#10b981;">✔ Fayl uğurla yükləndi və ekranda göstərildi!</span>`;
+                
+                const card = document.getElementById('folderCard');
+                card.style.display = 'block';
+                document.getElementById('folderCount').innerText = "1 fayl yükləndi";
             } else {
-                alert('Hazırda oxunan musiqi/video yoxdur!');
+                alert('Yükləmək üçün əvvəlcə link daxil edin!');
             }
         }
 
