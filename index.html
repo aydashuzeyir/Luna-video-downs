@@ -147,7 +147,7 @@
         .player-actions {
             display: flex;
             align-items: center;
-            gap: 5px;
+            gap: 4px;
         }
 
         .player-action-btn {
@@ -156,7 +156,7 @@
             color: var(--accent-color);
             cursor: pointer;
             font-size: 10px;
-            padding: 4px 7px;
+            padding: 3px 6px;
             border-radius: 6px;
             transition: 0.2s;
         }
@@ -227,7 +227,6 @@
         }
         .folder-item:last-child { border-bottom: none; }
 
-        /* Ayarlar paneli üslubu */
         .settings-group {
             margin-bottom: 8px;
         }
@@ -237,7 +236,7 @@
             font-size: 10px;
             margin-bottom: 4px;
         }
-        .settings-group select, .settings-group input {
+        .settings-group select {
             width: 100%;
             background: rgba(0, 0, 0, 0.3);
             border: 1px solid var(--border-color);
@@ -262,7 +261,6 @@
         </div>
     </header>
 
-    <!-- Ayarlar Paneli (Gizli/Açılan) -->
     <div class="card" id="settingsCard" style="display:none;">
         <div class="panel-title"><span>⚙️ Tətbiq Ayarları və Şriftlər</span></div>
         <div class="settings-group">
@@ -274,13 +272,8 @@
                 <option value="sans-serif">Standart (System)</option>
             </select>
         </div>
-        <div class="settings-group">
-            <label>Aksent Rəngi</label>
-            <input type="color" id="colorPicker" value="#ec4899" onchange="changeColor()" style="height: 32px; cursor: pointer;">
-        </div>
     </div>
 
-    <!-- Axtarış və Google Keçidi -->
     <div class="card">
         <div class="search-box">
             <input type="text" id="urlInput" placeholder="Spotify / Media linki yapışdırın...">
@@ -292,7 +285,6 @@
         </div>
     </div>
 
-    <!-- Pleyer və Yüklənmə Ekranı -->
     <div class="card">
         <div class="panel-title">
             <span>🎵 Musiqi & Video Pleyeri</span>
@@ -308,7 +300,6 @@
         </div>
     </div>
 
-    <!-- Sosial Şəbəkələr və Spotify -->
     <div class="section-title">Dəstəklənən Platformalar</div>
     <div class="social-grid">
         <div class="social-card"><span>🎧</span> Spotify</div>
@@ -319,7 +310,6 @@
         <div class="social-card"><span>🗲</span> Twitter (X)</div>
     </div>
 
-    <!-- Qovluqlar Bölməsi -->
     <div class="card" id="folderCard" style="display:none;">
         <div class="panel-title"><span>📂 Qovluqlarım</span></div>
         <div class="folder-list" id="folderContainer">
@@ -336,11 +326,6 @@
         function changeFont() {
             const fontVal = document.getElementById('fontSelect').value;
             document.documentElement.style.setProperty('--app-font', fontVal);
-        }
-
-        function changeColor() {
-            const colorVal = document.getElementById('colorPicker').value;
-            document.documentElement.style.setProperty('--accent-color', colorVal);
         }
 
         function loadMedia() {
@@ -415,4 +400,3 @@
     </script>
 </body>
 </html>
-
