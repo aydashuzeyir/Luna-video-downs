@@ -3,41 +3,23 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Luna Video Down</title>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Rubik:wght@400;500;600;700&family=JetBrains+Mono:wght@400;700&family=Outfit:wght@400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <title>Luna Media Player</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg-gradient: linear-gradient(135deg, #09090b 0%, #18181b 100%);
-            --card-bg: rgba(24, 34, 27, 0.75);
+            --card-bg: rgba(24, 34, 27, 0.9);
             --accent-color: #ec4899;
             --text-color: #ffffff;
             --text-secondary: #a1a1aa;
-            --border-color: rgba(255, 255, 255, 0.08);
-            --font-family: 'Plus Jakarta Sans', sans-serif;
+            --border-color: rgba(255, 255, 255, 0.1);
         }
-
-        body.theme-cyber { --bg-gradient: linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #311042 100%); --accent-color: #ec4899; }
-        body.theme-sunset { --bg-gradient: linear-gradient(135deg, #1c1917 0%, #291515 50%, #451a03 100%); --accent-color: #f97316; }
-        body.theme-emerald { --bg-gradient: linear-gradient(135deg, #064e3b 0%, #065f46 50%, #022c22 100%); --accent-color: #10b981; }
-        body.theme-ocean { --bg-gradient: linear-gradient(135deg, #0f172a 0%, #0369a1 50%, #082f49 100%); --accent-color: #38bdf8; }
-        body.theme-purple { --bg-gradient: linear-gradient(135deg, #2e1065 0%, #581c87 50%, #3b0764 100%); --accent-color: #c084fc; }
-        body.theme-crimson { --bg-gradient: linear-gradient(135deg, #450a0a 0%, #7f1d1d 50%, #2b0b0b 100%); --accent-color: #f87171; }
-        body.theme-midnight { --bg-gradient: linear-gradient(135deg, #020617 0%, #0f172a 100%); --accent-color: #6366f1; }
-        body.theme-gold { --bg-gradient: linear-gradient(135deg, #18181b 0%, #27272a 50%, #3f3f46 100%); --accent-color: #eab308; }
-
-        body.font-jakarta { --font-family: 'Plus Jakarta Sans', sans-serif; }
-        body.font-poppins { --font-family: 'Poppins', sans-serif; }
-        body.font-inter { --font-family: 'Inter', sans-serif; }
-        body.font-rubik { --font-family: 'Rubik', sans-serif; }
-        body.font-mono { --font-family: 'JetBrains Mono', monospace; }
-        body.font-outfit { --font-family: 'Outfit', sans-serif; }
-        body.font-space { --font-family: 'Space Grotesk', sans-serif; }
 
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: var(--font-family);
+            font-family: 'Plus Jakarta Sans', sans-serif;
         }
 
         body {
@@ -47,466 +29,210 @@
             display: flex;
             flex-direction: column;
             min-height: 100vh;
-            padding: 16px;
+            padding: 12px;
             max-width: 480px;
             margin: 0 auto;
-            transition: 0.4s ease;
         }
 
         header {
             text-align: center;
-            margin-bottom: 14px;
-            margin-top: 5px;
+            margin-bottom: 12px;
             position: relative;
         }
 
         header h1 {
             color: var(--accent-color);
-            font-size: 28px;
+            font-size: 22px;
             font-weight: 700;
         }
 
         header p {
             color: var(--text-secondary);
-            font-size: 12px;
-            margin-top: 2px;
+            font-size: 11px;
         }
 
-        .settings-toggle-btn {
-            position: absolute;
-            right: 0;
-            top: 5px;
+        .card {
             background: var(--card-bg);
             border: 1px solid var(--border-color);
-            color: var(--text-color);
-            width: 36px;
-            height: 36px;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 16px;
-            backdrop-filter: blur(12px);
-            transition: 0.2s;
-        }
-
-        .settings-toggle-btn:hover {
-            border-color: var(--accent-color);
-        }
-
-        .settings-wrapper {
-            display: none;
-            margin-bottom: 12px;
-        }
-
-        .settings-wrapper.active {
-            display: block;
-        }
-
-        .settings-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 12px 14px;
+            border-radius: 14px;
+            padding: 12px;
             margin-bottom: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            gap: 10px;
+            backdrop-filter: blur(10px);
         }
 
-        .settings-label {
-            color: var(--text-secondary);
-            font-size: 12px;
-            font-weight: 500;
-            white-space: nowrap;
-        }
-
-        .options-scroll {
+        .search-box {
             display: flex;
             gap: 6px;
-            overflow-x: auto;
-            scrollbar-width: none;
-        }
-        .options-scroll::-webkit-scrollbar { display: none; }
-
-        .opt-btn {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 5px 10px;
-            border-radius: 8px;
-            cursor: pointer;
-            font-size: 11px;
-            white-space: nowrap;
-            transition: 0.2s;
+            margin-bottom: 8px;
         }
 
-        .opt-btn:hover, .opt-btn.active {
-            border-color: var(--accent-color);
-            background: rgba(255, 255, 255, 0.12);
-        }
-
-        .top-action-bar {
-            display: flex;
-            gap: 8px;
-            margin-bottom: 16px;
-        }
-
-        .search-container {
-            display: flex;
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border-radius: 16px;
-            padding: 6px 6px 6px 14px;
-            border: 1px solid var(--border-color);
-            align-items: center;
-            box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+        .search-box input {
             flex: 1;
-        }
-
-        .search-container input {
-            background: transparent;
-            border: none;
+            background: rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 8px 12px;
             color: var(--text-color);
             font-size: 12px;
-            width: 100%;
             outline: none;
         }
 
-        .search-container input::placeholder { color: var(--text-secondary); }
+        .search-box input::placeholder {
+            color: var(--text-secondary);
+        }
 
-        .search-container button {
+        .btn {
             background: var(--accent-color);
             border: none;
             color: #fff;
-            padding: 10px 16px;
-            border-radius: 12px;
-            cursor: pointer;
+            padding: 8px 14px;
+            border-radius: 10px;
             font-weight: 600;
             font-size: 12px;
-            transition: 0.2s;
-            white-space: nowrap;
-        }
-
-        .folder-btn {
-            background: var(--card-bg);
-            border: 1px solid var(--border-color);
-            color: var(--text-color);
-            padding: 0 14px;
-            border-radius: 16px;
             cursor: pointer;
-            font-size: 12px;
-            font-weight: 500;
-            display: flex;
+            text-decoration: none;
+            display: inline-flex;
             align-items: center;
-            gap: 6px;
-            backdrop-filter: blur(12px);
-            transition: 0.2s;
+            justify-content: center;
             white-space: nowrap;
         }
 
-        .folder-btn:hover {
-            border-color: var(--accent-color);
-        }
-
-        .download-result-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 16px;
-            padding: 14px;
-            margin-bottom: 16px;
-            display: none;
-        }
-
-        .download-result-card.active { display: block; }
-
-        .result-title {
-            font-size: 12px;
-            font-weight: 600;
-            margin-bottom: 10px;
-            color: var(--accent-color);
-        }
-
-        .download-opt-btn {
+        .btn-secondary {
             background: rgba(255, 255, 255, 0.08);
             border: 1px solid var(--border-color);
             color: var(--text-color);
-            padding: 9px 12px;
-            border-radius: 10px;
-            text-align: left;
-            cursor: pointer;
-            font-size: 12px;
+            width: 100%;
+        }
+
+        .row-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6px;
+        }
+
+        .panel-title {
+            font-size: 11px;
+            font-weight: 600;
+            color: var(--accent-color);
+            margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            text-decoration: none;
-            margin-bottom: 8px;
-            transition: 0.2s;
         }
 
-        .download-opt-btn:hover { border-color: var(--accent-color); background: rgba(255,255,255,0.12); }
-
-        .player-box {
-            margin-top: 10px;
+        .media-container {
             width: 100%;
+            background: #000;
             border-radius: 10px;
             overflow: hidden;
-            background: #000;
-            display: none;
+            margin-top: 6px;
+            position: relative;
         }
-        .player-box.active { display: block; }
-        .player-box video, .player-box audio {
+
+        .media-container video {
             width: 100%;
+            height: 180px;
+            object-fit: contain;
+            display: block;
             outline: none;
         }
-        .player-box video { height: 200px; }
-        .player-box audio { height: 50px; padding: 5px; }
 
-        .section-title {
-            font-size: 12px;
+        .info-text {
+            font-size: 11px;
             color: var(--text-secondary);
-            margin-bottom: 10px;
-            font-weight: 500;
+            margin-bottom: 6px;
         }
 
-        .social-grid {
-            display: grid;
-            grid-template-columns: repeat(2, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
+        .folder-list {
+            font-size: 11px;
+            color: var(--text-secondary);
+            max-height: 80px;
+            overflow-y: auto;
         }
 
-        .social-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 12px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: var(--text-color);
-            font-size: 12px;
-            font-weight: 500;
-        }
-
-        .social-card span {
-            width: 28px;
-            height: 28px;
-            border-radius: 8px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 13px;
-        }
-
-        .ic-pin { background: rgba(230, 0, 35, 0.15); color: #e60023; }
-        .ic-fb { background: rgba(24, 119, 242, 0.15); color: #1877f2; }
-        .ic-insta { background: rgba(225, 48, 108, 0.15); color: #e1306c; }
-        .ic-threads { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
-        .ic-x { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
-        .ic-media { background: rgba(236, 72, 153, 0.15); color: var(--accent-color); }
-
-        .folders-section {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 16px;
-            display: none;
-        }
-        .folders-section.active { display: block; }
         .folder-item {
-            font-size: 12px;
-            padding: 8px;
+            padding: 4px 0;
             border-bottom: 1px solid var(--border-color);
             display: flex;
             justify-content: space-between;
-            align-items: center;
-            color: var(--text-secondary);
         }
         .folder-item:last-child { border-bottom: none; }
-
-        .info-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(12px);
-            border: 1px solid var(--border-color);
-            border-radius: 14px;
-            padding: 12px;
-            text-align: center;
-            color: var(--text-secondary);
-            font-size: 11px;
-            line-height: 1.4;
-            margin-top: auto;
-        }
     </style>
 </head>
-<body class="theme-cyber font-jakarta">
+<body>
 
     <header>
         <h1>Luna</h1>
-        <p>Media & Music Downloader</p>
-        <button class="settings-toggle-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
+        <p>Media Player & Google Girişi</p>
     </header>
 
-    <!-- Ayarlar Paneli -->
-    <div class="settings-wrapper" id="settingsWrapper">
-        <div class="settings-card">
-            <span class="settings-label">Fon Teması:</span>
-            <div class="options-scroll" id="themeOptions">
-                <button class="opt-btn active" onclick="setTheme('cyber', this)">Neon</button>
-                <button class="opt-btn" onclick="setTheme('sunset', this)">Sunset</button>
-                <button class="opt-btn" onclick="setTheme('emerald', this)">Emerald</button>
-                <button class="opt-btn" onclick="setTheme('ocean', this)">Ocean</button>
-                <button class="opt-btn" onclick="setTheme('purple', this)">Purple</button>
-                <button class="opt-btn" onclick="setTheme('crimson', this)">Crimson</button>
-                <button class="opt-btn" onclick="setTheme('midnight', this)">Midnight</button>
-                <button class="opt-btn" onclick="setTheme('gold', this)">Gold</button>
-            </div>
+    <!-- Axtarış və Google Keçidi -->
+    <div class="card">
+        <div class="search-box">
+            <input type="text" id="urlInput" placeholder="Video/Musiqi linki yapışdırın...">
+            <button class="btn" onclick="loadMedia()">Aç</button>
         </div>
-
-        <div class="settings-card">
-            <span class="settings-label">Yazı Fontu:</span>
-            <div class="options-scroll" id="fontOptions">
-                <button class="opt-btn active" onclick="setFont('jakarta', this)">Jakarta</button>
-                <button class="opt-btn" onclick="setFont('poppins', this)">Poppins</button>
-                <button class="opt-btn" onclick="setFont('inter', this)">Inter</button>
-                <button class="opt-btn" onclick="setFont('rubik', this)">Rubik</button>
-                <button class="opt-btn" onclick="setFont('mono', this)">Mono</button>
-                <button class="opt-btn" onclick="setFont('outfit', this)">Outfit</button>
-                <button class="opt-btn" onclick="setFont('space', this)">Space</button>
-            </div>
+        <div class="row-btns">
+            <a href="https://www.google.com" target="_blank" class="btn btn-secondary">🌐 Google-a Get</a>
+            <button class="btn btn-secondary" onclick="addNewFolder()">📁 Qovluq yarat</button>
         </div>
     </div>
 
-    <!-- Axtarış, Endirmə və New Folder Paneli -->
-    <div class="top-action-bar">
-        <div class="search-container">
-            <input type="text" id="urlInput" placeholder="Musiqi və ya video linkini bura yapışdır...">
-            <button onclick="handleDownload()">Endir</button>
+    <!-- Həmişə Açıq Sürüşdürmə Paneli ilə Video/Musiqi İzləmə -->
+    <div class="card">
+        <div class="panel-title">
+            <span>🎵 Sürüşdürmə Panelikli Pleyer</span>
+            <span id="playerStatus" style="color: var(--text-secondary); font-size: 10px;">Hazır</span>
         </div>
-        <button class="folder-btn" onclick="createNewFolder()" title="Yeni Qovluq yarat">
-            📁 New Folder
-        </button>
-    </div>
-
-    <!-- Qovluqlar Siyahısı Paneli -->
-    <div class="folders-section" id="foldersSection">
-        <div class="result-title" style="margin-bottom:6px;">Qovluqlarım:</div>
-        <div id="foldersList">
-            <div class="folder-item"><span>📁 Əsas Qovluq (Default)</span> <span>0 fayl</span></div>
+        <div class="info-text" id="mediaInfo">Link daxil edərək videonu irəli-geri sürüşdürə bilərsiniz.</div>
+        <div class="media-container">
+            <!-- controls atributu sayəsində irəli-geri sürüşdürmə çubuğu (progress bar) aktiv olur -->
+            <video id="mainPlayer" controls controlslist="nodownload" playsinline src=""></video>
         </div>
     </div>
 
-    <!-- Nəticə, İzləmə və Dinləmə Paneli -->
-    <div class="download-result-card" id="resultCard">
-        <div class="result-title">Yükləmə və İzləmə Paneli:</div>
-        <div id="resultList"></div>
-        <div class="player-box" id="mediaContainer"></div>
-    </div>
-
-    <div class="section-title">Dəstəklənən Platformalar & Rejimlər</div>
-    <div class="social-grid">
-        <div class="social-card"><span class="ic-pin">📌</span> Pinterest</div>
-        <div class="social-card"><span class="ic-fb">👥</span> Facebook</div>
-        <div class="social-card"><span class="ic-insta">📸</span> Instagram</div>
-        <div class="social-card"><span class="ic-threads">🧵</span> Threads</div>
-        <div class="social-card"><span class="ic-x">🗲</span> Twitter (X)</div>
-        <div class="social-card"><span class="ic-media">🎵</span> Musiqi & Video</div>
-    </div>
-
-    <div class="info-card">
-        Link daxil edərək səhifəni tərk etmədən birbaşa dinləyə, izləyə, cihazınıza endirə və ya qovluqlara ayıra bilərsiniz.
+    <!-- Qovluqlar Bölməsi -->
+    <div class="card" id="folderCard" style="display:none;">
+        <div class="panel-title"><span>Qovluqlarım</span></div>
+        <div class="folder-list" id="folderContainer">
+            <div class="folder-item"><span>📁 Əsas Qovluq</span><span>0 fayl</span></div>
+        </div>
     </div>
 
     <script>
-        let foldersCount = 1;
-
-        function toggleSettings() {
-            const wrapper = document.getElementById('settingsWrapper');
-            wrapper.classList.toggle('active');
-        }
-
-        function setTheme(themeName, btn) {
-            document.body.className = document.body.className.replace(/theme-\S+/g, '');
-            document.body.classList.add('theme-' + themeName);
-            document.querySelectorAll('#themeOptions .opt-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function setFont(fontName, btn) {
-            document.body.className = document.body.className.replace(/font-\S+/g, '');
-            document.body.classList.add('font-' + fontName);
-            document.querySelectorAll('#fontOptions .opt-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-        }
-
-        function createNewFolder() {
-            const folderName = prompt("Yeni qovluğun adını daxil edin:", "Yükləmələr " + (foldersCount + 1));
-            if(folderName) {
-                foldersCount++;
-                const fSec = document.getElementById('foldersSection');
-                const fList = document.getElementById('foldersList');
-                fSec.classList.add('active');
-                
-                const newItem = document.createElement('div');
-                newItem.className = 'folder-item';
-                newItem.innerHTML = `<span>📁 ${folderName}</span> <span>0 fayl</span>`;
-                fList.appendChild(newItem);
-            }
-        }
-
-        function handleDownload() {
+        function loadMedia() {
             const val = document.getElementById('urlInput').value.trim();
-            const resultCard = document.getElementById('resultCard');
-            const resultList = document.getElementById('resultList');
-            const mediaContainer = document.getElementById('mediaContainer');
+            const player = document.getElementById('mainPlayer');
+            const info = document.getElementById('mediaInfo');
+            const status = document.getElementById('playerStatus');
 
-            if(!val) {
+            if (!val) {
                 alert('Zəhmət olmasa keçərli link daxil edin!');
                 return;
             }
 
-            resultCard.classList.add('active');
-            
-            if(val.startsWith('http')) {
-                resultList.innerHTML = `
-                    <div class="download-opt-btn" onclick="triggerFileDownload('${val}')" style="cursor:pointer;">
-                        <span>📥 Cihaza Yüklə (Download)</span>
-                        <span>➔</span>
-                    </div>
-                    <div class="download-opt-btn" style="background: rgba(99, 102, 241, 0.15);">
-                        <span>🎧 Səhifədə Dinlə / İzlə</span>
-                        <span>✔</span>
-                    </div>
-                `;
-
-                mediaContainer.classList.add('active');
-                if(val.includes('.mp3') || val.includes('audio') || val.includes('spotify') || val.includes('track')) {
-                    mediaContainer.innerHTML = `<audio controls controlsList="nodownload" src="${val}"></audio>`;
-                } else {
-                    mediaContainer.innerHTML = `<video controls playsinline src="${val}"></video>`;
-                }
+            if (val.startsWith('http')) {
+                info.innerHTML = `Oxunan: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 28)}...</a>`;
+                status.innerText = "Oxunur";
+                player.src = val;
+                player.play().catch(e => console.log(e));
             } else {
-                resultList.innerHTML = `<div style="font-size:12px; color:var(--text-secondary);">Axtarış sorğusu: ${val}</div>`;
-                mediaContainer.classList.remove('active');
-                mediaContainer.innerHTML = '';
+                info.innerText = `Axtarıldı: ${val}`;
+                status.innerText = "Hazır";
             }
         }
 
-        function triggerFileDownload(url) {
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = '';
-            a.target = '_blank';
-            document.body.appendChild(a);
-            a.click();
-            document.body.removeChild(a);
+        function addNewFolder() {
+            const name = prompt("Yeni qovluğun adı:", "Yükləmələr");
+            if (name) {
+                const card = document.getElementById('folderCard');
+                const container = document.getElementById('folderContainer');
+                card.style.display = 'block';
+                
+                const item = document.createElement('div');
+                item.className = 'folder-item';
+                item.innerHTML = `<span>📁 ${name}</span><span>0 fayl</span>`;
+                container.appendChild(item);
+            }
         }
     </script>
 </body>
