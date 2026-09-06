@@ -212,9 +212,8 @@
         </div>
     </header>
 
-    <!-- Ayarlar Paneli (Şriftlər) -->
     <div class="card" id="settingsCard" style="display:none;">
-        <div class="panel-title" style="font-size: 11px; font-weight: 600; color: var(--accent-color); margin-bottom: 8px;"><span>⚙️ Tətbiq Ayarları və Şriftlər</span></div>
+        <div style="font-size: 11px; font-weight: 600; color: var(--accent-color); margin-bottom: 8px;"><span>⚙️ Tətbiq Ayarları və Şriftlər</span></div>
         <div class="settings-group">
             <label>Şrift Üslubu (Font)</label>
             <select id="fontSelect" onchange="changeFont()">
@@ -226,11 +225,10 @@
         </div>
     </div>
 
-    <!-- Axtarış və Google Keçidi -->
     <div class="card">
         <div class="search-box">
-            <input type="text" id="urlInput" placeholder="Pinterest / Spotify / Media linki...">
-            <button class="btn" onclick="downloadSmartMedia()">📥 Yüklə</button>
+            <input type="text" id="urlInput" placeholder="Spotify mahnı linki yapışdırın...">
+            <button class="btn" id="downloadBtn" onclick="directDownload()">Yüklə</button>
         </div>
         <div class="row-btns">
             <a href="https://www.google.com" target="_blank" class="btn btn-secondary">🌐 Google-a Get</a>
@@ -238,7 +236,6 @@
         </div>
     </div>
 
-    <!-- Sosial Şəbəkələr və Spotify -->
     <div class="section-title">Dəstəklənən Platformalar</div>
     <div class="social-grid">
         <div class="social-card"><span>🎧</span> Spotify</div>
@@ -249,11 +246,10 @@
         <div class="social-card"><span>🗲</span> Twitter (X)</div>
     </div>
 
-    <!-- Qovluqlar Bölməsi -->
     <div class="card" id="folderCard" style="display:none;">
-        <div class="panel-title" style="font-size: 11px; font-weight: 600; color: var(--accent-color); margin-bottom: 8px;"><span>📂 Qovluqlarım</span></div>
+        <div style="font-size: 11px; font-weight: 600; color: var(--accent-color); margin-bottom: 8px;"><span>📂 Qovluqlarım</span></div>
         <div class="folder-list" id="folderContainer">
-            <div class="folder-item"><span>📁 Əsas Qovluq</span><span id="folderCount">1 fayl yükləndi</span></div>
+            <div class="folder-item"><span>📁 Əsas Qovluq</span><span id="folderCount">0 fayl</span></div>
         </div>
     </div>
 
@@ -280,40 +276,51 @@
             document.documentElement.style.setProperty('--app-font', fontVal);
         }
 
-        // Ağıllı Yükləmə Funksiyası
-        function downloadSmartMedia() {
+        // Birbaşa səhifədə endirmə məntiqi
+        async function directDownload() {
             const val = document.getElementById('urlInput').value.trim();
+            const btn = document.getElementById('downloadBtn');
+
             if (!val) {
-                alert('Zəhmət olmasa yükləmək üçün link daxil edin!');
+                alert('Zəhmət olmasa Spotify linki daxil edin!');
                 return;
             }
 
-            let downloadUrl = val;
+            if (val.includes('spotify.com')) {
+                btn.innerText = "Yüklənir...";
+                btn.disabled = true;
 
-            // Platformaları tanıyırıq və avtomatik yükləmə vasitəsinə yönləndiririk
-            if (val.includes('pinterest.com') || val.includes('pin.it')) {
-                // Pinterest üçün yükləmə səhifəsinə linki ötürürük
-                downloadUrl = `https://pinterestvideodownloader.com/download.php?url=${encodeURIComponent(val)}`;
-            } else if (val.includes('instagram.com')) {
-                downloadUrl = `https://saveig.app/en?url=${encodeURIComponent(val)}`;
-            } else if (val.includes('spotify.com')) {
-                downloadUrl = `https://spotifydown.com/?url=${encodeURIComponent(val)}`;
-            } else if (val.includes('twitter.com') || val.includes('x.com')) {
-                downloadUrl = `https://ssstwitter.com/${encodeURIComponent(val)}`;
-            } else if (val.startsWith('http')) {
-                // Digər birbaşa linklər üçünsə birbaşa açır
-                downloadUrl = val;
+                try {
+                    // Spotify linkini birbaşa arxa planda endirilə bilən formata çevirən API sorğusu
+                    const apiUrl = `https://api.fabdl.com/spotify/get?url=${encodeURIComponent(val)}`;
+                    const response = await fetch(apiUrl);
+                    const data = await response.json();
+
+                    if (data && data.result && data.result.download_url) {
+                        // Birbaşa faylı yükləməyə başlayır
+                        const downloadLink = document.createElement('a');
+                        downloadLink.href = data.result.download_url;
+                        downloadLink.download = `${data.result.name || 'spotify_track'}.mp3`;
+                        document.body.appendChild(downloadLink);
+                        downloadLink.click();
+                        document.body.removeChild(downloadLink);
+
+                        // Qovluq bölməsini yeniləyirik
+                        const card = document.getElementById('folderCard');
+                        card.style.display = 'block';
+                        document.getElementById('folderCount').innerText = "1 fayl yükləndi";
+                    } else {
+                        alert("Mahnı tapılmadı və ya link səhvdir.");
+                    }
+                } catch (error) {
+                    alert("Yükləmə zamanı xəta baş verdi. Linki yoxlayın.");
+                } finally {
+                    btn.innerText = "Yüklə";
+                    btn.disabled = false;
+                }
             } else {
-                alert(`Axtarıldı: ${val}`);
-                return;
+                alert("Zəhmət olmasa keçərli Spotify linki daxil edin.");
             }
-
-            // Yeni səhifədə yükləmə panelini açır
-            window.open(downloadUrl, '_blank');
-
-            // Qovluq bölməsini aktivləşdiririk
-            const card = document.getElementById('folderCard');
-            card.style.display = 'block';
         }
 
         function addNewFolder() {
