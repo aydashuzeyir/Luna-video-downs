@@ -234,12 +234,12 @@
             display: none;
         }
         .player-box.active { display: block; }
-        .player-box video, .player-box iframe {
+        .player-box video, .player-box audio {
             width: 100%;
-            height: 200px;
-            border: none;
             outline: none;
         }
+        .player-box video { height: 200px; }
+        .player-box audio { height: 50px; padding: 5px; }
 
         .section-title {
             font-size: 12px;
@@ -255,7 +255,7 @@
             margin-bottom: 16px;
         }
 
-        .social-icon {
+        .social-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
@@ -264,19 +264,12 @@
             display: flex;
             align-items: center;
             gap: 10px;
-            text-decoration: none;
             color: var(--text-color);
             font-size: 12px;
             font-weight: 500;
-            transition: all 0.2s ease;
         }
 
-        .social-icon:hover {
-            border-color: var(--accent-color);
-            transform: translateY(-2px);
-        }
-
-        .social-icon span {
+        .social-card span {
             width: 28px;
             height: 28px;
             border-radius: 8px;
@@ -286,13 +279,8 @@
             font-size: 13px;
         }
 
-        .ic-google { background: rgba(66, 133, 244, 0.15); color: #4285f4; }
-        .ic-insta { background: rgba(225, 48, 108, 0.15); color: #e1306c; }
-        .ic-tiktok { background: rgba(255, 255, 255, 0.1); color: #ff0050; }
         .ic-spotify { background: rgba(29, 185, 84, 0.15); color: #1db954; }
-        .ic-pinterest { background: rgba(189, 8, 28, 0.15); color: #bd081c; }
-        .ic-fb { background: rgba(24, 119, 242, 0.15); color: #1877f2; }
-        .ic-x { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+        .ic-media { background: rgba(236, 72, 153, 0.15); color: var(--accent-color); }
 
         .info-card {
             background: var(--card-bg);
@@ -315,7 +303,6 @@
         <button class="settings-toggle-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
     </header>
 
-    <!-- Ayarlar Paneli -->
     <div class="settings-wrapper" id="settingsWrapper">
         <div class="settings-card">
             <span class="settings-label">Fon Teması:</span>
@@ -345,46 +332,29 @@
         </div>
     </div>
 
-    <!-- Axtarış və Endirmə Paneli -->
     <div class="search-container">
-        <input type="text" id="urlInput" placeholder="Video/Musiqi linki yapışdır və ya axtar...">
+        <input type="text" id="urlInput" placeholder="Video və ya musiqi linkini bura yapışdır...">
         <button onclick="handleDownload()">Endir</button>
     </div>
 
-    <!-- Nəticə və Pleyer Paneli -->
     <div class="download-result-card" id="resultCard">
         <div class="result-title">Media Nəticələri:</div>
         <div id="resultList"></div>
         <div class="player-box" id="mediaContainer"></div>
     </div>
 
-    <div class="section-title">Dəstəklənən Mənbələr</div>
+    <div class="section-title">Rejimlər</div>
     <div class="social-grid">
-        <a href="https://www.google.com" target="_blank" class="social-icon">
-            <span class="ic-google">🌐</span> Google
-        </a>
-        <a href="https://www.instagram.com" target="_blank" class="social-icon">
-            <span class="ic-insta">📸</span> Instagram
-        </a>
-        <a href="https://www.tiktok.com" target="_blank" class="social-icon">
-            <span class="ic-tiktok">🎵</span> TikTok
-        </a>
-        <a href="https://open.spotify.com" target="_blank" class="social-icon">
-            <span class="ic-spotify">🎧</span> Spotify
-        </a>
-        <a href="https://www.pinterest.com" target="_blank" class="social-icon">
-            <span class="ic-pinterest">📌</span> Pinterest
-        </a>
-        <a href="https://www.facebook.com" target="_blank" class="social-icon">
-            <span class="ic-fb">👥</span> Facebook
-        </a>
-        <a href="https://twitter.com" target="_blank" class="social-icon">
-            <span class="ic-x">✖</span> X (Twitter)
-        </a>
+        <div class="social-card">
+            <span class="ic-spotify">🎧</span> Musiqi Dinləmə
+        </div>
+        <div class="social-card">
+            <span class="ic-media">▶</span> Video İzləmə
+        </div>
     </div>
 
     <div class="info-card">
-        Link daxil edərək birbaşa video izləyə, arxa planda səsləndirə və ya telefonunuza endirə bilərsiniz.
+        Link daxil etdikdən sonra faylı birbaşa endirə, arxa planda dinləyə və ya izləyə bilərsiniz.
     </div>
 
     <script>
@@ -414,7 +384,7 @@
             const mediaContainer = document.getElementById('mediaContainer');
 
             if(!val) {
-                window.open('https://www.google.com', '_blank');
+                alert('Zəhmət olmasa link daxil edin!');
                 return;
             }
 
@@ -422,8 +392,8 @@
             
             if(val.startsWith('http')) {
                 resultList.innerHTML = `
-                    <a href="${val}" target="_blank" class="download-opt-btn">
-                        <span>📥 Videonu/Faylı Birbaşa Endir</span>
+                    <a href="${val}" download target="_blank" class="download-opt-btn">
+                        <span>📥 Cihaza Yüklə (Download)</span>
                         <span>➔</span>
                     </a>
                     <a href="${val}" target="_blank" class="download-opt-btn" style="background: rgba(99, 102, 241, 0.15);">
@@ -432,15 +402,16 @@
                     </a>
                 `;
 
-                if(val.endsWith('.mp4') || val.endsWith('.webm') || val.endsWith('.mp3')) {
-                    mediaContainer.classList.add('active');
-                    mediaContainer.innerHTML = `<video controls playsinline src="${val}"></video>`;
+                mediaContainer.classList.add('active');
+                if(val.includes('.mp3') || val.includes('audio')) {
+                    mediaContainer.innerHTML = `<audio controls controlsList="nodownload" src="${val}"></audio>`;
                 } else {
-                    mediaContainer.classList.remove('active');
-                    mediaContainer.innerHTML = '';
+                    mediaContainer.innerHTML = `<video controls playsinline src="${val}"></video>`;
                 }
             } else {
-                window.open('https://www.google.com/search?q=' + encodeURIComponent(val), '_blank');
+                resultList.innerHTML = `<div style="font-size:12px; color:var(--text-secondary);">Axtarış: ${val}</div>`;
+                mediaContainer.classList.remove('active');
+                mediaContainer.innerHTML = '';
             }
         }
     </script>
