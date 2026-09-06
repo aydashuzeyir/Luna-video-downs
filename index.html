@@ -149,6 +149,12 @@
             background: rgba(255, 255, 255, 0.12);
         }
 
+        .top-action-bar {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 16px;
+        }
+
         .search-container {
             display: flex;
             background: var(--card-bg);
@@ -156,9 +162,9 @@
             border-radius: 16px;
             padding: 6px 6px 6px 14px;
             border: 1px solid var(--border-color);
-            margin-bottom: 16px;
             align-items: center;
             box-shadow: 0 8px 24px rgba(0,0,0,0.2);
+            flex: 1;
         }
 
         .search-container input {
@@ -176,7 +182,7 @@
             background: var(--accent-color);
             border: none;
             color: #fff;
-            padding: 10px 18px;
+            padding: 10px 16px;
             border-radius: 12px;
             cursor: pointer;
             font-weight: 600;
@@ -185,7 +191,26 @@
             white-space: nowrap;
         }
 
-        .search-container button:hover { opacity: 0.9; }
+        .folder-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 0 14px;
+            border-radius: 16px;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            backdrop-filter: blur(12px);
+            transition: 0.2s;
+            white-space: nowrap;
+        }
+
+        .folder-btn:hover {
+            border-color: var(--accent-color);
+        }
 
         .download-result-card {
             background: var(--card-bg);
@@ -279,8 +304,33 @@
             font-size: 13px;
         }
 
-        .ic-music { background: rgba(29, 185, 84, 0.15); color: #1db954; }
+        .ic-pin { background: rgba(230, 0, 35, 0.15); color: #e60023; }
+        .ic-fb { background: rgba(24, 119, 242, 0.15); color: #1877f2; }
+        .ic-insta { background: rgba(225, 48, 108, 0.15); color: #e1306c; }
+        .ic-threads { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
+        .ic-x { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
         .ic-media { background: rgba(236, 72, 153, 0.15); color: var(--accent-color); }
+
+        .folders-section {
+            background: var(--card-bg);
+            backdrop-filter: blur(12px);
+            border: 1px solid var(--border-color);
+            border-radius: 14px;
+            padding: 12px;
+            margin-bottom: 16px;
+            display: none;
+        }
+        .folders-section.active { display: block; }
+        .folder-item {
+            font-size: 12px;
+            padding: 8px;
+            border-bottom: 1px solid var(--border-color);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--text-secondary);
+        }
+        .folder-item:last-child { border-bottom: none; }
 
         .info-card {
             background: var(--card-bg);
@@ -292,6 +342,7 @@
             color: var(--text-secondary);
             font-size: 11px;
             line-height: 1.4;
+            margin-top: auto;
         }
     </style>
 </head>
@@ -314,7 +365,7 @@
                 <button class="opt-btn" onclick="setTheme('ocean', this)">Ocean</button>
                 <button class="opt-btn" onclick="setTheme('purple', this)">Purple</button>
                 <button class="opt-btn" onclick="setTheme('crimson', this)">Crimson</button>
-                <button class="opt-btn" onclick="setOptionTheme('midnight', this)">Midnight</button>
+                <button class="opt-btn" onclick="setTheme('midnight', this)">Midnight</button>
                 <button class="opt-btn" onclick="setTheme('gold', this)">Gold</button>
             </div>
         </div>
@@ -333,34 +384,49 @@
         </div>
     </div>
 
-    <!-- Axtarış və Endirmə Paneli -->
-    <div class="search-container">
-        <input type="text" id="urlInput" placeholder="Musiqi və ya video linkini bura yapışdır...">
-        <button onclick="handleDownload()">Endir</button>
+    <!-- Axtarış, Endirmə və New Folder Paneli -->
+    <div class="top-action-bar">
+        <div class="search-container">
+            <input type="text" id="urlInput" placeholder="Musiqi və ya video linkini bura yapışdır...">
+            <button onclick="handleDownload()">Endir</button>
+        </div>
+        <button class="folder-btn" onclick="createNewFolder()" title="Yeni Qovluq yarat">
+            📁 New Folder
+        </button>
+    </div>
+
+    <!-- Qovluqlar Siyahısı Paneli -->
+    <div class="folders-section" id="foldersSection">
+        <div class="result-title" style="margin-bottom:6px;">Qovluqlarım:</div>
+        <div id="foldersList">
+            <div class="folder-item"><span>📁 Əsas Qovluq (Default)</span> <span>0 fayl</span></div>
+        </div>
     </div>
 
     <!-- Nəticə, İzləmə və Dinləmə Paneli -->
     <div class="download-result-card" id="resultCard">
-        <div class="result-title">Media Nəticələri:</div>
+        <div class="result-title">Yükləmə və İzləmə Paneli:</div>
         <div id="resultList"></div>
         <div class="player-box" id="mediaContainer"></div>
     </div>
 
-    <div class="section-title">Rejimlər</div>
+    <div class="section-title">Dəstəklənən Platformalar & Rejimlər</div>
     <div class="social-grid">
-        <div class="social-card">
-            <span class="ic-music">🎧</span> Musiqi Dinləmə
-        </div>
-        <div class="social-card">
-            <span class="ic-media">▶</span> Video İzləmə
-        </div>
+        <div class="social-card"><span class="ic-pin">📌</span> Pinterest</div>
+        <div class="social-card"><span class="ic-fb">👥</span> Facebook</div>
+        <div class="social-card"><span class="ic-insta">📸</span> Instagram</div>
+        <div class="social-card"><span class="ic-threads">🧵</span> Threads</div>
+        <div class="social-card"><span class="ic-x">🗲</span> Twitter (X)</div>
+        <div class="social-card"><span class="ic-media">🎵</span> Musiqi & Video</div>
     </div>
 
     <div class="info-card">
-        Link daxil etdikdən sonra heç bir kənar tətbiqə keçmədən birbaşa səhifədə dinləyə və ya endirə bilərsiniz.
+        Link daxil edərək səhifəni tərk etmədən birbaşa dinləyə, izləyə, cihazınıza endirə və ya qovluqlara ayıra bilərsiniz.
     </div>
 
     <script>
+        let foldersCount = 1;
+
         function toggleSettings() {
             const wrapper = document.getElementById('settingsWrapper');
             wrapper.classList.toggle('active');
@@ -380,6 +446,21 @@
             btn.classList.add('active');
         }
 
+        function createNewFolder() {
+            const folderName = prompt("Yeni qovluğun adını daxil edin:", "Yükləmələr " + (foldersCount + 1));
+            if(folderName) {
+                foldersCount++;
+                const fSec = document.getElementById('foldersSection');
+                const fList = document.getElementById('foldersList');
+                fSec.classList.add('active');
+                
+                const newItem = document.createElement('div');
+                newItem.className = 'folder-item';
+                newItem.innerHTML = `<span>📁 ${folderName}</span> <span>0 fayl</span>`;
+                fList.appendChild(newItem);
+            }
+        }
+
         function handleDownload() {
             const val = document.getElementById('urlInput').value.trim();
             const resultCard = document.getElementById('resultCard');
@@ -394,14 +475,13 @@
             resultCard.classList.add('active');
             
             if(val.startsWith('http')) {
-                // Link birbaşa daxildə işlənməsi üçün hazırlandı (kənar tətbiqlərə keçidin qarşısı alındı)
                 resultList.innerHTML = `
                     <div class="download-opt-btn" onclick="triggerFileDownload('${val}')" style="cursor:pointer;">
                         <span>📥 Cihaza Yüklə (Download)</span>
                         <span>➔</span>
                     </div>
                     <div class="download-opt-btn" style="background: rgba(99, 102, 241, 0.15);">
-                        <span>🎧 Səhifədə Hazırdır</span>
+                        <span>🎧 Səhifədə Dinlə / İzlə</span>
                         <span>✔</span>
                     </div>
                 `;
