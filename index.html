@@ -168,7 +168,7 @@
             border-radius: 10px;
             overflow: hidden;
             margin-top: 6px;
-            display: none; /* Başlanğıcda gizlidir, link daxil edildikdə görünəcək */
+            display: none; /* Başlanğıcda tamamilə gizlidir */
         }
 
         .media-container video {
@@ -300,9 +300,10 @@
             </div>
         </div>
         <div class="info-text" id="mediaInfo">Link daxil edərək musiqini dinləyə və yükləyə bilərsiniz.</div>
-        <!-- Boş video qutusu artıq gizlədildi, yalnız link daxil edildikdə görünəcək -->
+        
+        <!-- Boş qutu və içindəki ikonlar tamamilə silindi, yalnız link daxil edildikdə pleyer görünəcək -->
         <div class="media-container" id="mediaContainerBox">
-            <video id="mainPlayer" playsinline src=""></video>
+            <video id="mainPlayer" controls playsinline src=""></video>
         </div>
     </div>
 
@@ -361,7 +362,7 @@
             }
 
             if (val.startsWith('http')) {
-                mediaBox.style.display = 'block'; // Link daxil edildikdə video qutusu açılır
+                mediaBox.style.display = 'block'; // Link yazılıb Aç-a basanda pleyer görünür
                 info.innerHTML = `Ekranda göstərilir: <a href="${val}" target="_blank" style="color:var(--accent-color);">${val.substring(0, 25)}...</a>`;
                 status.innerText = "Oxunur";
                 player.src = val;
