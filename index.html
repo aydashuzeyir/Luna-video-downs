@@ -57,6 +57,7 @@
             text-align: center;
             margin-bottom: 14px;
             margin-top: 5px;
+            position: relative;
         }
 
         header h1 {
@@ -71,13 +72,45 @@
             margin-top: 2px;
         }
 
+        .settings-toggle-btn {
+            position: absolute;
+            right: 0;
+            top: 5px;
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            width: 36px;
+            height: 36px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 16px;
+            backdrop-filter: blur(12px);
+            transition: 0.2s;
+        }
+
+        .settings-toggle-btn:hover {
+            border-color: var(--accent-color);
+        }
+
+        .settings-wrapper {
+            display: none;
+            margin-bottom: 12px;
+        }
+
+        .settings-wrapper.active {
+            display: block;
+        }
+
         .settings-card {
             background: var(--card-bg);
             backdrop-filter: blur(12px);
             border: 1px solid var(--border-color);
             border-radius: 16px;
             padding: 12px 14px;
-            margin-bottom: 12px;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -254,12 +287,12 @@
         }
 
         .ic-google { background: rgba(66, 133, 244, 0.15); color: #4285f4; }
-        .ic-spotify { background: rgba(29, 185, 84, 0.15); color: #1db954; }
         .ic-insta { background: rgba(225, 48, 108, 0.15); color: #e1306c; }
         .ic-tiktok { background: rgba(255, 255, 255, 0.1); color: #ff0050; }
+        .ic-spotify { background: rgba(29, 185, 84, 0.15); color: #1db954; }
+        .ic-pinterest { background: rgba(189, 8, 28, 0.15); color: #bd081c; }
         .ic-fb { background: rgba(24, 119, 242, 0.15); color: #1877f2; }
         .ic-x { background: rgba(255, 255, 255, 0.1); color: #ffffff; }
-        .ic-pinterest { background: rgba(189, 8, 28, 0.15); color: #bd081c; }
 
         .info-card {
             background: var(--card-bg);
@@ -279,34 +312,36 @@
     <header>
         <h1>Luna</h1>
         <p>Media & Music Downloader</p>
+        <button class="settings-toggle-btn" onclick="toggleSettings()" title="Ayarlar">⚙️</button>
     </header>
 
-    <!-- Genişləndirilmiş Tema Seçimi -->
-    <div class="settings-card">
-        <span class="settings-label">Fon Teması:</span>
-        <div class="options-scroll" id="themeOptions">
-            <button class="opt-btn active" onclick="setTheme('cyber', this)">Neon</button>
-            <button class="opt-btn" onclick="setTheme('sunset', this)">Sunset</button>
-            <button class="opt-btn" onclick="setTheme('emerald', this)">Emerald</button>
-            <button class="opt-btn" onclick="setTheme('ocean', this)">Ocean</button>
-            <button class="opt-btn" onclick="setTheme('purple', this)">Purple</button>
-            <button class="opt-btn" onclick="setTheme('crimson', this)">Crimson</button>
-            <button class="opt-btn" onclick="setTheme('midnight', this)">Midnight</button>
-            <button class="opt-btn" onclick="setTheme('gold', this)">Gold</button>
+    <!-- Ayarlar Paneli -->
+    <div class="settings-wrapper" id="settingsWrapper">
+        <div class="settings-card">
+            <span class="settings-label">Fon Teması:</span>
+            <div class="options-scroll" id="themeOptions">
+                <button class="opt-btn active" onclick="setTheme('cyber', this)">Neon</button>
+                <button class="opt-btn" onclick="setTheme('sunset', this)">Sunset</button>
+                <button class="opt-btn" onclick="setTheme('emerald', this)">Emerald</button>
+                <button class="opt-btn" onclick="setTheme('ocean', this)">Ocean</button>
+                <button class="opt-btn" onclick="setTheme('purple', this)">Purple</button>
+                <button class="opt-btn" onclick="setTheme('crimson', this)">Crimson</button>
+                <button class="opt-btn" onclick="setTheme('midnight', this)">Midnight</button>
+                <button class="opt-btn" onclick="setTheme('gold', this)">Gold</button>
+            </div>
         </div>
-    </div>
 
-    <!-- Genişləndirilmiş Font Seçimi -->
-    <div class="settings-card">
-        <span class="settings-label">Yazı Fontu:</span>
-        <div class="options-scroll" id="fontOptions">
-            <button class="opt-btn active" onclick="setFont('jakarta', this)">Jakarta</button>
-            <button class="opt-btn" onclick="setFont('poppins', this)">Poppins</button>
-            <button class="opt-btn" onclick="setFont('inter', this)">Inter</button>
-            <button class="opt-btn" onclick="setFont('rubik', this)">Rubik</button>
-            <button class="opt-btn" onclick="setFont('mono', this)">Mono</button>
-            <button class="opt-btn" onclick="setFont('outfit', this)">Outfit</button>
-            <button class="opt-btn" onclick="setFont('space', this)">Space</button>
+        <div class="settings-card">
+            <span class="settings-label">Yazı Fontu:</span>
+            <div class="options-scroll" id="fontOptions">
+                <button class="opt-btn active" onclick="setFont('jakarta', this)">Jakarta</button>
+                <button class="opt-btn" onclick="setFont('poppins', this)">Poppins</button>
+                <button class="opt-btn" onclick="setFont('inter', this)">Inter</button>
+                <button class="opt-btn" onclick="setFont('rubik', this)">Rubik</button>
+                <button class="opt-btn" onclick="setFont('mono', this)">Mono</button>
+                <button class="opt-btn" onclick="setFont('outfit', this)">Outfit</button>
+                <button class="opt-btn" onclick="setFont('space', this)">Space</button>
+            </div>
         </div>
     </div>
 
@@ -325,6 +360,9 @@
 
     <div class="section-title">Dəstəklənən Mənbələr</div>
     <div class="social-grid">
+        <a href="https://www.google.com" target="_blank" class="social-icon">
+            <span class="ic-google">🌐</span> Google
+        </a>
         <a href="https://www.instagram.com" target="_blank" class="social-icon">
             <span class="ic-insta">📸</span> Instagram
         </a>
@@ -350,6 +388,11 @@
     </div>
 
     <script>
+        function toggleSettings() {
+            const wrapper = document.getElementById('settingsWrapper');
+            wrapper.classList.toggle('active');
+        }
+
         function setTheme(themeName, btn) {
             document.body.className = document.body.className.replace(/theme-\S+/g, '');
             document.body.classList.add('theme-' + themeName);
